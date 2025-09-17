@@ -9,6 +9,7 @@ START (accept) <--- the start state
     other: START
     
 BACKSLASH (accept)
+    /: BACKSLASH
     *: STAR_ONE, print(space character)
     ": STRING_QOUTE_ONE
     ': CHAR_QOUTE_ONE

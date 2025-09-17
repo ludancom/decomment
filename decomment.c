@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
-enum Statetype {START, BACKSLASH, STRING_QOUTE_ONE, CHAR_QOUTE_ONE, STAR_ONE, 
-STRING_QOUTE_AFTER_STAR_ONE, CHAR_QOUTE_AFTER_STAR_ONE, STAR_TWO};
+enum Statetype {START, BACKSLASH, STRING_QUOTE_ONE, CHAR_QUOTE_ONE, STAR_ONE, 
+STRING_QUOTE_AFTER_STAR_ONE, CHAR_QUOTE_AFTER_STAR_ONE, STAR_TWO};
 
 static int lineNumber;
 enum Statetype handleStartState(char c){
@@ -11,11 +11,11 @@ enum Statetype handleStartState(char c){
         state = BACKSLASH;
     }
     else if (c == '"'){
-        state = STRING_QOUTE_ONE;
+        state = STRING_QUOTE_ONE;
         putchar(c);
     }
     else if (c == '\''){
-        state = CHAR_QOUTE_ONE;
+        state = CHAR_QUOTE_ONE;
         putchar(c);
     }
     
@@ -36,13 +36,18 @@ enum Statetype handleBackslashState(char c){
         state = STAR_ONE;
         putchar(' ');
     }
+    else if (c == '/'){
+        /* state = BACKSLASH; (add this, fix the print statements) */
+        putchar('/');
+        putchar(c);
+    }
     else if (c == '"'){
-        state = STRING_QOUTE_ONE;
+        state = STRING_QUOTE_ONE;
         putchar('/');
         putchar(c);
     }
     else if (c == '\''){
-        state = CHAR_QOUTE_ONE;
+        state = CHAR_QUOTE_ONE;
         putchar('/');
         putchar(c);
     }
@@ -66,7 +71,7 @@ enum Statetype handleStringQuoteOneState(char c){
         if (c == '\n'){
             lineNumber +=1;
         }
-        state = STRING_QOUTE_ONE;
+        state = STRING_QUOTE_ONE;
     }
     putchar(c);
     return state;
@@ -81,7 +86,7 @@ enum Statetype handleCharQuoteOneState(char c){
         if (c == '\n'){
             lineNumber +=1;
         }
-        state = CHAR_QOUTE_ONE;
+        state = CHAR_QUOTE_ONE;
     }
     putchar(c);
     return state;
@@ -93,13 +98,13 @@ enum Statetype handleStarOneState(char c){
         state = STAR_TWO;
     }
     else if (c == '\n'){
-        putChar("\n");
+        putchar("\n");
     }
     else if (c == '"'){
-        state = STRING_QOUTE_AFTER_STAR_ONE;
+        state = STRING_QUOTE_AFTER_STAR_ONE;
     }
     else if (c == '\''){
-        state = CHAR_QOUTE_AFTER_STAR_ONE;
+        state = CHAR_QUOTE_AFTER_STAR_ONE;
     }
     else{
         state = STAR_ONE;
@@ -113,7 +118,7 @@ enum Statetype handleStringQuoteAfterStarOneState(char c){
         state = STAR_ONE;
     }
     else{
-        state = STRING_QOUTE_AFTER_STAR_ONE;
+        state = STRING_QUOTE_AFTER_STAR_ONE;
     }
     return state;
 }
@@ -124,7 +129,7 @@ enum Statetype handleCharQuoteAfterStarOneState(char c){
         state = STAR_ONE;
     }
     else{
-        state = STRING_QOUTE_AFTER_STAR_ONE;
+        state = STRING_QUOTE_AFTER_STAR_ONE;
     }
     return state;
 }
@@ -135,10 +140,10 @@ enum Statetype handleStarTwoState(char c){
         state = START;
     }
     else if (c == '"'){
-        state = STRING_QOUTE_AFTER_STAR_ONE;
+        state = STRING_QUOTE_AFTER_STAR_ONE;
     }
     else if (c == '\''){
-        state = CHAR_QOUTE_AFTER_STAR_ONE;
+        state = CHAR_QUOTE_AFTER_STAR_ONE;
     }
     else{
         state = STAR_ONE;
@@ -159,34 +164,34 @@ int main(void)
             case BACKSLASH:
                 state = handleBackslashState(c);
                 break;
-            case STRING_QOUTE_ONE:
-                state = handleStringQouteOneState(c);
+            case STRING_QUOTE_ONE:
+                state = handleStringQuoteOneState(c);
                 break;
-            case CHAR_QOUTE_ONE:
+            case CHAR_QUOTE_ONE:
                 state = handleCharQuoteOneState(c);
                 break;
             case STAR_ONE:
                 state = handleStarOneState(c);
                 break;
-            case STRING_QOUTE_AFTER_STAR_ONE:
+            case STRING_QUOTE_AFTER_STAR_ONE:
                 state = handleStringQuoteAfterStarOneState(c);
                 break;
-            case CHAR_QOUTE_AFTER_STAR_ONE:
+            case CHAR_QUOTE_AFTER_STAR_ONE:
                 state = handleCharQuoteAfterStarOneState(c);
                 break;
             case STAR_TWO:
-                state = handleStarTwoState;
+                state = handleStarTwoState(c);
                 break;
 
         }
     }
 
-    if(state == handleStartState || state == handleBackslashState 
-    || state == handleStringQuoteOneState || state == handleCharQuoteOneState){
+    if(state == START || state == BACKSLASH 
+    || state == STRING_QUOTE_ONE || state == CHAR_QUOTE_ONE){
         return EXIT_SUCCESS;
     }
     else{
-        printf("Error: line %i: unterminated comment\n");
+        printf("Error: line %i: unterminated comment\n", lineNumber);
         return EXIT_FAILURE;
     }
 }
