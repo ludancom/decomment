@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <ctype.h>
-#include <cstdlib>
+#include <stdlib.h>
 enum Statetype {START, BACKSLASH, STRING_QOUTE_ONE, CHAR_QOUTE_ONE, STAR_ONE, 
 STRING_QOUTE_AFTER_STAR_ONE, CHAR_QOUTE_AFTER_STAR_ONE, STAR_TWO};
 
@@ -129,7 +129,7 @@ enum Statetype handleCharQuoteAfterStarOneState(char c){
     return state;
 }
 
-enum Statetype STAR_TWO(char c){
+enum Statetype handleStarTwoState(char c){
     enum Statetype state;
     if(c == '/'){
         state = START;
@@ -159,7 +159,26 @@ int main(void)
             case BACKSLASH:
                 state = handleBackslashState(c);
                 break;
-            }
+            case STRING_QOUTE_ONE:
+                state = handleStringQouteOneState(c);
+                break;
+            case CHAR_QOUTE_ONE:
+                state = handleCharQuoteOneState(c);
+                break;
+            case STAR_ONE:
+                state = handleStarOneState(c);
+                break;
+            case STRING_QOUTE_AFTER_STAR_ONE:
+                state = handleStringQuoteAfterStarOneState(c);
+                break;
+            case CHAR_QOUTE_AFTER_STAR_ONE:
+                state = handleCharQuoteAfterStarOneState(c);
+                break;
+            case STAR_TWO:
+                state = handleStarTwoState;
+                break;
+
+        }
     }
 
     if(state == handleStartState || state == handleBackslashState 
@@ -167,7 +186,7 @@ int main(void)
         return EXIT_SUCCESS;
     }
     else{
-        printf("Error: line X: unterminated comment/n");
+        printf("Error: line %i: unterminated comment\n");
         return EXIT_FAILURE;
     }
 }
