@@ -1,0 +1,51 @@
+---------------------------------------------------------------
+Textual representation of the decomment DFA for Assignment 1
+---------------------------------------------------------------
+
+START (accept) <--- the start state
+    /: BACKSLASH
+    ": STRING_QOUTE_ONE
+    ': CHAR_QOUTE_ONE
+    other: START
+    
+BACKSLASH (accept)
+    *: STAR_ONE, print(space character)
+    ": STRING_QOUTE_ONE
+    ': CHAR_QOUTE_ONE
+    other: START
+
+STRING_QOUTE_ONE (accept)
+    ": START
+    other: STRING_QOUTE_ONE
+    
+CHAR_QOUTE_ONE (accept)
+    ': START
+    other: CHAR_QOUTE_ONE
+
+STAR_ONE (reject)
+    *: STAR_TWO
+    newline character: print(newline)
+    ": STRING_QOUTE_AFTER_STAR_ONE
+    ': CHAR_QOUTE_AFTER_STAR_ONE
+    other: STAR_ONE
+
+STRING_QOUTE_AFTER_STAR_ONE (reject)
+    ": STAR_ONE
+    other: STRING_QOUTE_AFTER_STAR_ONE
+
+CHAR_QOUTE_AFTER_STAR_ONE (reject)
+    ': STAR_ONE
+    other: CHAR_QOUTE_AFTER_STAR_ONE
+
+STAR_TWO (reject)
+    /: START
+    ": STRING_QOUTE_AFTER_STAR_ONE
+    ': CHAR_QOUTE_AFTER_STAR_ONE
+    other: STAR_ONE
+
+
+
+
+
+
+
