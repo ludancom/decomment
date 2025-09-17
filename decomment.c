@@ -98,7 +98,7 @@ enum Statetype handleStarOneState(char c){
         state = STAR_TWO;
     }
     else if (c == '\n'){
-        putchar("\n");
+        putchar('\n');
     }
     else if (c == '"'){
         state = STRING_QUOTE_AFTER_STAR_ONE;
