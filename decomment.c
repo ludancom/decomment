@@ -188,7 +188,7 @@ int main(void)
 
     if(state == START || state == BACKSLASH 
     || state == STRING_QUOTE_ONE || state == CHAR_QUOTE_ONE){
-        return 0;
+        return EXIT_SUCCESS;
     }
     else{
         printf("Error: line %i: unterminated comment\n", lineNumber);
