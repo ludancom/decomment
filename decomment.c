@@ -2,7 +2,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 enum Statetype {START, BACKSLASH, STRING_QUOTE_ONE, CHAR_QUOTE_ONE, STAR_ONE, 
-STRING_QUOTE_AFTER_STAR_ONE, CHAR_QUOTE_AFTER_STAR_ONE, STAR_TWO, ESCAPED_CHAR};
+STRING_QUOTE_AFTER_STAR_ONE, CHAR_QUOTE_AFTER_STAR_ONE, STAR_TWO, ESCAPED_CHAR_ONE};
 
 static int lineNumber = 1;
 enum Statetype handleStartState(char c){
@@ -66,8 +66,8 @@ enum Statetype handleStringQuoteOneState(char c){
     if (c == '"'){
         state = START;
     }
-    else if(c== '\\'){
-        state = ESCAPED_CHAR;
+    else if(c == '\\'){
+        state = ESCAPED_CHAR_ONE;
     }
     else{
         if (c == '\n'){
@@ -83,9 +83,6 @@ enum Statetype handleCharQuoteOneState(char c){
     enum Statetype state;
     if (c == '\''){
         state = START;
-    }
-    else if(c== '\\'){
-        state = ESCAPED_CHAR;
     }
     else{
         if (c == '\n'){
@@ -125,9 +122,6 @@ enum Statetype handleStringQuoteAfterStarOneState(char c){
     else if(c == '*'){
         state = STAR_TWO;
     }
-    else if(c== '\\'){
-        state = ESCAPED_CHAR;
-    }
     else{
         state = STRING_QUOTE_AFTER_STAR_ONE;
     }
@@ -142,19 +136,16 @@ enum Statetype handleCharQuoteAfterStarOneState(char c){
     else if(c == '*'){
         state = STAR_TWO;
     }
-    else if(c=='\\'){
-        state = ESCAPED_CHAR;
-    }
     else{
         state = STRING_QUOTE_AFTER_STAR_ONE;
     }
     return state;
 }
 
-enum Statetype handleEscapedChar(char c, enum Statetype s) {
+enum Statetype handleEscapedCharOne(char c) {
     enum Statetype state;
     putchar(c);
-    state = s;
+    state = STRING_QUOTE_ONE;
     return state;            
 }
 
@@ -213,9 +204,8 @@ int main(void)
             case CHAR_QUOTE_AFTER_STAR_ONE:
                 state = handleCharQuoteAfterStarOneState(c);
                 break;
-            case ESCAPED_CHAR:
-                state = handleEscapedChar(c, state);
-                break;
+            case ESCAPED_CHAR_ONE:
+                state = handleEscapedCharOne(c);
             case STAR_TWO:
                 state = handleStarTwoState(c);
                 break;
