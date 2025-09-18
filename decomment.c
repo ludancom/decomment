@@ -2,7 +2,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 enum Statetype {START, BACKSLASH, STRING_QUOTE_ONE, CHAR_QUOTE_ONE, STAR_ONE, 
-STRING_QUOTE_AFTER_STAR_ONE, CHAR_QUOTE_AFTER_STAR_ONE, STAR_TWO};
+STRING_QUOTE_AFTER_STAR_ONE, CHAR_QUOTE_AFTER_STAR_ONE, STAR_TWO, ESCAPED_CHAR};
 
 static int lineNumber = 1;
 enum Statetype handleStartState(char c){
@@ -119,6 +119,9 @@ enum Statetype handleStringQuoteAfterStarOneState(char c){
     else if(c == '*'){
         state = STAR_TWO;
     }
+    else if(c== '/'){
+        state = ESCAPED_CHAR;
+    }
     else{
         state = STRING_QUOTE_AFTER_STAR_ONE;
     }
@@ -133,10 +136,20 @@ enum Statetype handleCharQuoteAfterStarOneState(char c){
     else if(c == '*'){
         state = STAR_TWO;
     }
+    else if(c=='\\'){
+        state = ESCAPED_CHAR;
+    }
     else{
         state = STRING_QUOTE_AFTER_STAR_ONE;
     }
     return state;
+}
+
+enum Statetype handleEscapedChar(char c, enum Statetype s) {
+    enum Statetype state;
+    putchar(c);
+    state = s;
+    return state;            
 }
 
 enum Statetype handleStarTwoState(char c){
@@ -162,6 +175,8 @@ enum Statetype handleStarTwoState(char c){
     }
     return state;
 }
+
+
 
 
 int main(void)
@@ -191,6 +206,9 @@ int main(void)
                 break;
             case CHAR_QUOTE_AFTER_STAR_ONE:
                 state = handleCharQuoteAfterStarOneState(c);
+                break;
+            case ESCAPED_CHAR:
+                state = handleEscapedChar(c, state);
                 break;
             case STAR_TWO:
                 state = handleStarTwoState(c);
