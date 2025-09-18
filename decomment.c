@@ -6,8 +6,11 @@ enum Statetype {START, BACKSLASH, STRING_QUOTE_ONE, CHAR_QUOTE_ONE, STAR_ONE,
 STRING_QUOTE_AFTER_STAR_ONE, CHAR_QUOTE_AFTER_STAR_ONE, STAR_TWO, ESCAPED_STRING_ONE,
 ESCAPED_CHAR_ONE, ESCAPED_STRING_TWO, ESCAPED_CHAR_TWO};
 
-static int lineNumber = 1; /* counts the number of lines outside of an unterminated comment */
-static int lineNumberInComment = 0; /* counts the number of lines inside of a terminated comment */
+/* counts the number of lines outside of an unterminated comment */
+static int lineNumber = 1; 
+
+/* counts the number of lines inside of a terminated comment */
+static int lineNumberInComment = 0; 
 
 /*
 handles the start state function. c is the current character of the DFA.
