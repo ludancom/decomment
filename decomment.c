@@ -150,6 +150,9 @@ enum Statetype handleStarTwoState(char c){
     else if (c == '\''){
         state = CHAR_QUOTE_AFTER_STAR_ONE;
     }
+    else if (c == '*'){
+        state = STAR_TWO;
+    }
     else{
         state = STAR_ONE;
     }

@@ -44,6 +44,7 @@ STAR_TWO (reject)
     /: START
     ": STRING_QOUTE_AFTER_STAR_ONE
     ': CHAR_QOUTE_AFTER_STAR_ONE
+    *: STAR_TWO
     other: STAR_ONE
 
 
