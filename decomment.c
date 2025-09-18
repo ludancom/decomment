@@ -2,7 +2,8 @@
 #include <ctype.h>
 #include <stdlib.h>
 enum Statetype {START, BACKSLASH, STRING_QUOTE_ONE, CHAR_QUOTE_ONE, STAR_ONE, 
-STRING_QUOTE_AFTER_STAR_ONE, CHAR_QUOTE_AFTER_STAR_ONE, STAR_TWO, ESCAPED_CHAR_ONE};
+STRING_QUOTE_AFTER_STAR_ONE, CHAR_QUOTE_AFTER_STAR_ONE, STAR_TWO, ESCAPED_STRING_ONE,
+ESCAPED_CHAR_ONE, ESCAPED_STRING_TWO, ESCAPED_CHAR_TWO};
 
 static int lineNumber = 1;
 enum Statetype handleStartState(char c){
@@ -67,7 +68,7 @@ enum Statetype handleStringQuoteOneState(char c){
         state = START;
     }
     else if(c == '\\'){
-        state = ESCAPED_CHAR_ONE;
+        state = ESCAPED_STRING_ONE;
     }
     else{
         if (c == '\n'){
@@ -79,10 +80,20 @@ enum Statetype handleStringQuoteOneState(char c){
     return state;
 }
 
+enum Statetype handleEscapedStringOne(char c) {
+    enum Statetype state;
+    putchar(c);
+    state = STRING_QUOTE_ONE;
+    return state;            
+}
+
 enum Statetype handleCharQuoteOneState(char c){
     enum Statetype state;
     if (c == '\''){
         state = START;
+    }
+    else if(c == '\\'){
+        state = ESCAPED_CHAR_ONE;
     }
     else{
         if (c == '\n'){
@@ -93,6 +104,15 @@ enum Statetype handleCharQuoteOneState(char c){
     putchar(c);
     return state;
 }
+
+
+enum Statetype handleEscapedCharOne(char c) {
+    enum Statetype state;
+    putchar(c);
+    state = CHAR_QUOTE_ONE;
+    return state;            
+}
+
 
 enum Statetype handleStarOneState(char c){
     enum Statetype state;
@@ -122,10 +142,20 @@ enum Statetype handleStringQuoteAfterStarOneState(char c){
     else if(c == '*'){
         state = STAR_TWO;
     }
+    else if(c == '\\'){
+        state = ESCAPED_STRING_TWO;
+    }
     else{
         state = STRING_QUOTE_AFTER_STAR_ONE;
     }
     return state;
+}
+
+enum Statetype handleEscapedStringTwo(char c) {
+    enum Statetype state;
+    putchar(c);
+    state = STRING_QUOTE_AFTER_STAR_ONE;
+    return state;            
 }
 
 enum Statetype handleCharQuoteAfterStarOneState(char c){
@@ -133,21 +163,25 @@ enum Statetype handleCharQuoteAfterStarOneState(char c){
     if (c == '\''){
         state = STAR_ONE;
     }
+    else if(c == '\\'){
+        state = ESCAPED_CHAR_ONE;
+    }
     else if(c == '*'){
         state = STAR_TWO;
     }
     else{
-        state = STRING_QUOTE_AFTER_STAR_ONE;
+        state = CHAR_QUOTE_AFTER_STAR_ONE;
     }
     return state;
 }
 
-enum Statetype handleEscapedCharOne(char c) {
+enum Statetype handleEscapedCharTwo(char c) {
     enum Statetype state;
     putchar(c);
-    state = STRING_QUOTE_ONE;
+    state = CHAR_QUOTE_AFTER_STAR_ONE;
     return state;            
 }
+
 
 enum Statetype handleStarTwoState(char c){
     enum Statetype state;
@@ -195,6 +229,12 @@ int main(void)
             case CHAR_QUOTE_ONE:
                 state = handleCharQuoteOneState(c);
                 break;
+            case ESCAPED_STRING_ONE:
+                state = handleEscapedStringOne(c);
+                break;
+            case ESCAPED_CHAR_ONE:
+                state = handleEscapedCharOne(c);
+                break;
             case STAR_ONE:
                 state = handleStarOneState(c);
                 break;
@@ -204,8 +244,11 @@ int main(void)
             case CHAR_QUOTE_AFTER_STAR_ONE:
                 state = handleCharQuoteAfterStarOneState(c);
                 break;
-            case ESCAPED_CHAR_ONE:
-                state = handleEscapedCharOne(c);
+            case ESCAPED_STRING_TWO:
+                state = handleEscapedStringTwo(c);
+                break;
+            case ESCAPED_CHAR_TWO:
+                state = handleEscapedCharTwo(c);
                 break;
             case STAR_TWO:
                 state = handleStarTwoState(c);
