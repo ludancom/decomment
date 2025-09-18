@@ -4,7 +4,7 @@
 enum Statetype {START, BACKSLASH, STRING_QUOTE_ONE, CHAR_QUOTE_ONE, STAR_ONE, 
 STRING_QUOTE_AFTER_STAR_ONE, CHAR_QUOTE_AFTER_STAR_ONE, STAR_TWO};
 
-static int lineNumber;
+static int lineNumber = 1;
 enum Statetype handleStartState(char c){
     enum Statetype state;
     if(c == '/'){
