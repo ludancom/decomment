@@ -204,7 +204,7 @@ int main(void)
         return EXIT_SUCCESS;
     }
     else{
-        printf("Error: line %i: unterminated comment\n", lineNumber);
+        fprintf(stderr, "Error: line %i: unterminated comment\n", lineNumber);
         return EXIT_FAILURE;
     }
 }
