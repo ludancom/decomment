@@ -143,7 +143,7 @@ enum Statetype handleStarTwoState(char c){
     enum Statetype state;
     if(c == '/'){
         state = START;
-        putchar('/n')
+        putchar('/n');
     }
     else if (c == '"'){
         state = STRING_QUOTE_AFTER_STAR_ONE;
