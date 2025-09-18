@@ -175,6 +175,7 @@ int main(void)
                 state = handleStartState(c);
                 break;
             case BACKSLASH:
+                putchar('/');
                 state = handleBackslashState(c);
                 break;
             case STRING_QUOTE_ONE:
