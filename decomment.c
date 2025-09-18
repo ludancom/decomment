@@ -206,7 +206,7 @@ int main(void)
                 break;
             case ESCAPED_CHAR_ONE:
                 state = handleEscapedCharOne(c);
-                break
+                break;
             case STAR_TWO:
                 state = handleStarTwoState(c);
                 break;
