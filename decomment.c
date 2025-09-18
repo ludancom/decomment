@@ -117,6 +117,9 @@ enum Statetype handleStringQuoteAfterStarOneState(char c){
     if (c == '"'){
         state = STAR_ONE;
     }
+    else if(c == '*'){
+        state = STAR_TWO;
+    }
     else{
         state = STRING_QUOTE_AFTER_STAR_ONE;
     }
@@ -127,6 +130,9 @@ enum Statetype handleCharQuoteAfterStarOneState(char c){
     enum Statetype state;
     if (c == '\''){
         state = STAR_ONE;
+    }
+    else if(c == '*'){
+        state = STAR_TWO;
     }
     else{
         state = STRING_QUOTE_AFTER_STAR_ONE;

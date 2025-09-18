@@ -32,10 +32,12 @@ STAR_ONE (reject)
 
 STRING_QOUTE_AFTER_STAR_ONE (reject)
     ": STAR_ONE
+    *: STAR_TWO
     other: STRING_QOUTE_AFTER_STAR_ONE
 
 CHAR_QOUTE_AFTER_STAR_ONE (reject)
     ': STAR_ONE
+    *: STAR_TWO
     other: CHAR_QOUTE_AFTER_STAR_ONE
 
 STAR_TWO (reject)
