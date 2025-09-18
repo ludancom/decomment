@@ -157,7 +157,7 @@ enum Statetype handleStarTwoState(char c){
         state = STAR_ONE;
     }
     if(c == '\n'){
-        putChar('\n');
+        putchar('\n');
     }
     return state;
 }
