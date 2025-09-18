@@ -19,7 +19,6 @@ enum Statetype handleStartState(char c){
         state = CHAR_QUOTE_ONE;
         putchar(c);
     }
-    
     else{
         if (c == '\n'){
             ++lineNumber;
@@ -127,7 +126,6 @@ enum Statetype handleStarOneState(char c){
     }
     else{
         if (c == '\n'){
-            ++lineNumber;
             putchar('\n');
         }
         state = STAR_ONE;
