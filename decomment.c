@@ -204,7 +204,7 @@ enum Statetype handleStarTwoState(char c){
     }
     if(c == '\n'){
         putchar('\n');
-        ++lineNumber;
+        ++lineNumberInComment;
     }
     return state;
 }
