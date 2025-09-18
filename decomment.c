@@ -215,7 +215,7 @@ int main(void)
     }
 
     if(state == START || state == BACKSLASH 
-    || state == STRING_QUOTE_ONE || state == CHAR_QUOTE_ONE){
+    || state == STRING_QUOTE_ONE || state == CHAR_QUOTE_ONE || state == ESCAPED_CHAR_ONE){
         if(state == BACKSLASH){
             putchar('/');
         }
