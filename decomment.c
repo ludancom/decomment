@@ -66,6 +66,9 @@ enum Statetype handleStringQuoteOneState(char c){
     if (c == '"'){
         state = START;
     }
+    else if(c== '\\'){
+        state = ESCAPED_CHAR;
+    }
     else{
         if (c == '\n'){
             ++lineNumber;
@@ -80,6 +83,9 @@ enum Statetype handleCharQuoteOneState(char c){
     enum Statetype state;
     if (c == '\''){
         state = START;
+    }
+    else if(c== '\\'){
+        state = ESCAPED_CHAR;
     }
     else{
         if (c == '\n'){
@@ -119,7 +125,7 @@ enum Statetype handleStringQuoteAfterStarOneState(char c){
     else if(c == '*'){
         state = STAR_TWO;
     }
-    else if(c== '/'){
+    else if(c== '\\'){
         state = ESCAPED_CHAR;
     }
     else{
