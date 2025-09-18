@@ -155,6 +155,7 @@ enum Statetype handleStarTwoState(char c){
 int main(void)
 {
     int c;
+
     enum Statetype state = START;
     while((c=getchar()) != EOF){
         switch (state) {
