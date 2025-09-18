@@ -127,6 +127,7 @@ enum Statetype handleStarOneState(char c){
     }
     else{
         if (c == '\n'){
+            ++lineNumber;
             putchar('\n');
         }
         state = STAR_ONE;
