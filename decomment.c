@@ -38,6 +38,7 @@ enum Statetype handleBackslashState(char c){
     }
     else if (c == '/'){
         state = BACKSLASH;
+        putchar(c);
     }
     else if (c == '"'){
         state = STRING_QUOTE_ONE;
