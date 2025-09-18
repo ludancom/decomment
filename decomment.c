@@ -34,11 +34,11 @@ enum Statetype handleBackslashState(char c){
     enum Statetype state;
     if(c == '*'){
         state = STAR_ONE;
-        putchar('/');
         putchar(' ');
     }
     else if (c == '/'){
         state = BACKSLASH;
+        putchar('/');
         putchar(c);
     }
     else if (c == '"'){
