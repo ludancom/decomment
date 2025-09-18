@@ -38,7 +38,6 @@ enum Statetype handleBackslashState(char c){
     }
     else if (c == '/'){
         state = BACKSLASH;
-        putchar('/');
         putchar(c);
     }
     else if (c == '"'){
