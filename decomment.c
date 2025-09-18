@@ -6,6 +6,7 @@ STRING_QUOTE_AFTER_STAR_ONE, CHAR_QUOTE_AFTER_STAR_ONE, STAR_TWO, ESCAPED_STRING
 ESCAPED_CHAR_ONE, ESCAPED_STRING_TWO, ESCAPED_CHAR_TWO};
 
 static int lineNumber = 1;
+static int lineNumberInComment = 0;
 enum Statetype handleStartState(char c){
     enum Statetype state;
     if(c == '/'){
@@ -127,6 +128,7 @@ enum Statetype handleStarOneState(char c){
     else{
         if (c == '\n'){
             putchar('\n');
+            ++lineNumberInComment;
         }
         state = STAR_ONE;
     }
@@ -185,6 +187,7 @@ enum Statetype handleEscapedCharTwo(char c) {
 enum Statetype handleStarTwoState(char c){
     enum Statetype state;
     if(c == '/'){
+        lineNumber = lineNumber + lineNumberInComment;
         state = START;
     }
     else if (c == '"'){
