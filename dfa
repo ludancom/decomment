@@ -10,22 +10,29 @@ START (accept) <--- the start state
     
 BACKSLASH (accept)
     /: BACKSLASH
-    *: STAR_ONE, print(space character)
+    *: STAR_ONE
     ": STRING_QOUTE_ONE
     ': CHAR_QOUTE_ONE
     other: START
 
 STRING_QOUTE_ONE (accept)
     ": START
+    /: ESCAPED_STRING_ONE
     other: STRING_QOUTE_ONE
     
 CHAR_QOUTE_ONE (accept)
     ': START
+    /: ESCAPED_CHAR_ONE
+    other: CHAR_QOUTE_ONE
+
+ESCAPED_STRING_ONE (accept)
+    other: STRING_QOUTE_ONE
+
+ESCAPED_CHAR_ONE (accept)
     other: CHAR_QOUTE_ONE
 
 STAR_ONE (reject)
     *: STAR_TWO
-    newline character: print(newline)
     ": STRING_QOUTE_AFTER_STAR_ONE
     ': CHAR_QOUTE_AFTER_STAR_ONE
     other: STAR_ONE
@@ -33,12 +40,22 @@ STAR_ONE (reject)
 STRING_QOUTE_AFTER_STAR_ONE (reject)
     ": STAR_ONE
     *: STAR_TWO
+    \: ESCAPED_STRING_TWO
     other: STRING_QOUTE_AFTER_STAR_ONE
 
 CHAR_QOUTE_AFTER_STAR_ONE (reject)
     ': STAR_ONE
     *: STAR_TWO
+    \: ESCAPED_CHAR_TWO
     other: CHAR_QOUTE_AFTER_STAR_ONE
+
+STRING_QOUTE_TWO (reject)
+    ": START
+    other: STRING_QOUTE_ONE
+    
+CHAR_QOUTE_TWO (reject)
+    ': START
+    other: CHAR_QOUTE_ONE
 
 STAR_TWO (reject)
     /: START
